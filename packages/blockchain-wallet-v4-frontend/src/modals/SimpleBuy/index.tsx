@@ -1,5 +1,9 @@
-import { actions, selectors } from 'data'
 import { bindActionCreators, compose, Dispatch } from 'redux'
+import { connect, ConnectedProps } from 'react-redux'
+import { find, isEmpty, propEq, propOr } from 'ramda'
+import React, { PureComponent } from 'react'
+
+import { actions, selectors } from 'data'
 import {
   CoinType,
   FiatType,
@@ -8,29 +12,32 @@ import {
   SBPairType,
   SBPaymentMethodType
 } from 'core/types'
-import { connect, ConnectedProps } from 'react-redux'
-import { find, isEmpty, propEq, propOr } from 'ramda'
-import { getData } from './selectors'
 import { GoalsType } from 'data/goals/types'
-import { ModalPropsType } from '../types'
 import { RootState } from 'data/rootReducer'
 import { SimpleBuyStepType } from 'data/types'
+import Flyout, { duration, FlyoutChild } from 'components/Flyout'
+import ModalEnhancer from 'providers/ModalEnhancer'
+
+import { getData } from './selectors'
+import { ModalPropsType } from '../types'
+
+// step templates
 import AddCard from './AddCard'
+import BankWireDetails from './BankWireDetails'
 import BillingAddress from './BillingAddress'
 import CancelOrder from './CancelOrder'
 import CheckoutConfirm from './CheckoutConfirm'
 import CryptoSelection from './CryptoSelection'
 import CurrencySelection from './CurrencySelection'
 import EnterAmount from './EnterAmount'
-import Flyout, { duration, FlyoutChild } from 'components/Flyout'
 import KycRequired from './KycRequired'
-import ModalEnhancer from 'providers/ModalEnhancer'
+import LinkBank from './LinkBank'
+import LinkBankHandler from './LinkBankHandler'
 import OrderSummary from './OrderSummary'
 import PaymentMethods from './PaymentMethods'
-import React, { PureComponent } from 'react'
 import ThreeDSHandler from './ThreeDSHandler'
-import TransferDetails from './TransferDetails'
 
+// step wrappers
 import Loading from './template.loading'
 import Pending from './template.pending'
 import Rejected from './template.rejected'
@@ -149,6 +156,19 @@ class SimpleBuy extends PureComponent<Props, State> {
                 />
               </FlyoutChild>
             )}
+            {this.props.step === 'LINK_BANK' && (
+              <FlyoutChild>
+                <LinkBank {...this.props} handleClose={this.handleClose} />
+              </FlyoutChild>
+            )}
+            {this.props.step === 'LINK_BANK_HANDLER' && (
+              <FlyoutChild>
+                <LinkBankHandler
+                  {...this.props}
+                  handleClose={this.handleClose}
+                />
+              </FlyoutChild>
+            )}
             {this.props.step === 'ADD_CARD' && (
               <FlyoutChild>
                 <AddCard {...this.props} handleClose={this.handleClose} />
@@ -183,9 +203,9 @@ class SimpleBuy extends PureComponent<Props, State> {
                 <OrderSummary {...this.props} handleClose={this.handleClose} />
               </FlyoutChild>
             )}
-            {this.props.step === 'TRANSFER_DETAILS' && (
+            {this.props.step === 'BANK_WIRE_DETAILS' && (
               <FlyoutChild>
-                <TransferDetails
+                <BankWireDetails
                   {...this.props}
                   handleClose={this.handleClose}
                 />
@@ -278,17 +298,23 @@ type LinkStatePropsType =
         | '3DS_HANDLER'
         | 'CC_BILLING_ADDRESS'
         | 'KYC_REQUIRED'
+        | 'LINK_BANK_HANDLER' // TODO: YODLEE probably need custom step type?
     }
   | {
       addBank?: boolean
       displayBack?: boolean
       fiatCurrency: FiatType
       pair: SBPairType
-      step: 'TRANSFER_DETAILS'
+      step: 'BANK_WIRE_DETAILS'
     }
   | {
       order: SBOrderType
       step: 'CHECKOUT_CONFIRM' | 'ORDER_SUMMARY' | 'CANCEL_ORDER'
+    }
+  | {
+      cryptoCurrency?: CoinType
+      pair: SBPairType
+      step: 'LINK_BANK'
     }
   | {
       cardId?: string

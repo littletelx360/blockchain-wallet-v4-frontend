@@ -50,10 +50,12 @@ export enum SimpleBuyStepType {
   'PAYMENT_METHODS',
   'ORDER_SUMMARY',
   'CHECKOUT_CONFIRM',
+  'LINK_BANK',
+  'LINK_BANK_HANDLER',
   'ADD_CARD',
   'CC_BILLING_ADDRESS',
   '3DS_HANDLER',
-  'TRANSFER_DETAILS',
+  'BANK_WIRE_DETAILS',
   'CANCEL_ORDER',
   'KYC_REQUIRED'
 }
@@ -309,7 +311,7 @@ export type StepActionsPayload =
       addBank?: boolean
       displayBack: boolean
       fiatCurrency: FiatType
-      step: 'TRANSFER_DETAILS'
+      step: 'BANK_WIRE_DETAILS'
     }
   | {
       cryptoCurrency: CoinType
@@ -325,6 +327,8 @@ export type StepActionsPayload =
         | 'CURRENCY_SELECTION'
         | 'CC_BILLING_ADDRESS'
         | 'KYC_REQUIRED'
+        | 'LINK_BANK'
+        | 'LINK_BANK_HANDLER' // TODO: need to create new step type and pass partner data?
     }
 
 interface SetStepAction {
