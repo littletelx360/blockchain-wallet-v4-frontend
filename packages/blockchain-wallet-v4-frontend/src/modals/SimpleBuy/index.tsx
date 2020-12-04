@@ -12,9 +12,9 @@ import {
   SBPairType,
   SBPaymentMethodType
 } from 'core/types'
+import { FastLinkType, SimpleBuyStepType } from 'data/types'
 import { GoalsType } from 'data/goals/types'
 import { RootState } from 'data/rootReducer'
-import { SimpleBuyStepType } from 'data/types'
 import Flyout, { duration, FlyoutChild } from 'components/Flyout'
 import ModalEnhancer from 'providers/ModalEnhancer'
 
@@ -312,8 +312,9 @@ type LinkStatePropsType =
       step: 'CHECKOUT_CONFIRM' | 'ORDER_SUMMARY' | 'CANCEL_ORDER'
     }
   | {
-      cryptoCurrency?: CoinType
-      pair: SBPairType
+      cryptoCurrency: CoinType
+      fastLink: FastLinkType,
+      pair: SBPairType,
       step: 'LINK_BANK'
     }
   | {

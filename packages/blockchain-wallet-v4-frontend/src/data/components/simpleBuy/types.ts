@@ -72,6 +72,19 @@ export type SBShowModalOriginType =
   | 'WelcomeModal'
   | 'WithdrawModal'
 
+export type FastLinkType = {
+  attributes: {
+    fastlinkParams: {
+      configName: 'Verification'
+    }
+    fastlinkUrl: string
+    token: string
+    tokenExpiresAt: string
+  },
+  id: string
+  partner: 'YODLEE'
+}
+
 // State
 export type SimpleBuyState = {
   account: RemoteDataType<string, SBAccountType>
@@ -83,6 +96,7 @@ export type SimpleBuyState = {
   cryptoCurrency: undefined | CoinType
   displayBack: boolean
   everypay3DS: RemoteDataType<string, Everypay3DSResponseType>
+  fastLink: RemoteDataType<string, FastLinkType>
   fiatCurrency: undefined | FiatType
   fiatEligible: RemoteDataType<string, FiatEligibleType>
   method: undefined | SBPaymentMethodType
@@ -314,6 +328,10 @@ export type StepActionsPayload =
       step: 'BANK_WIRE_DETAILS'
     }
   | {
+      fastLink: FastLinkType
+      step: 'LINK_BANK'
+    }
+  | {
       cryptoCurrency: CoinType
       fiatCurrency: FiatType
       order?: SBOrderType
@@ -327,7 +345,6 @@ export type StepActionsPayload =
         | 'CURRENCY_SELECTION'
         | 'CC_BILLING_ADDRESS'
         | 'KYC_REQUIRED'
-        | 'LINK_BANK'
         | 'LINK_BANK_HANDLER' // TODO: need to create new step type and pass partner data?
     }
 

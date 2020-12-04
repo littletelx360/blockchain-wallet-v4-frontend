@@ -22,6 +22,9 @@ export const getCryptoCurrency = (state: RootState) =>
 export const getDisplayBack = (state: RootState) =>
   state.components.simpleBuy.displayBack
 
+export const getFastLink = (state: RootState) =>
+  state.components.simpleBuy.fastLink
+
 export const getFiatCurrency = (state: RootState) =>
   state.components.simpleBuy.fiatCurrency || state.preferences.sbFiatCurrency
 
@@ -108,6 +111,7 @@ export const getDefaultPaymentMethod = (state: RootState) => {
                 method.currency === fiatCurrency
             )
           case 'BANK_ACCOUNT':
+          case 'LINK_BANK':
           case 'USER_CARD':
           case undefined:
             return undefined
