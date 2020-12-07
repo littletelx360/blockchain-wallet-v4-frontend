@@ -115,6 +115,22 @@ export default ({
       }
     })
 
+  const updateBankAccountLink = (
+    providerAccountId: string,
+    userId: string // TODO: use UserDataType.id instead of string
+  ) =>
+    authorizedPost({
+      url: nabuUrl,
+      removeDefaultPostData: true,
+      endPoint: `/payments/banktransfer/${userId}/update`,
+      contentType: 'application/json',
+      data: {
+        attributes: {
+          providerAccountId
+        }
+      }
+    })
+
   const confirmSBOrder = (
     order: SBOrderType,
     attributes?: SBProviderAttributesType,
@@ -353,6 +369,7 @@ export default ({
     getSBQuote,
     getSBTransactions,
     submitSBCardDetailsToEverypay,
+    updateBankAccountLink,
     withdrawSBFunds
   }
 }
