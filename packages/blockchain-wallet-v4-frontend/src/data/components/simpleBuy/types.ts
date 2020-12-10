@@ -1,5 +1,6 @@
 import * as AT from './actionTypes'
 import {
+  BankTransferAccountType,
   CoinType,
   Everypay3DSResponseType,
   FiatEligibleType,
@@ -90,6 +91,7 @@ export type SimpleBuyState = {
   account: RemoteDataType<string, SBAccountType>
   addBank: boolean | undefined
   balances: RemoteDataType<string, SBBalancesType>
+  bankTransferAccounts: RemoteDataType<string, Array<BankTransferAccountType>>
   card: RemoteDataType<string, SBCardType>
   cardId: undefined | string
   cards: RemoteDataType<string, Array<SBCardType>>
@@ -147,6 +149,22 @@ interface ActivateSBCardSuccess {
 
 interface DestroyCheckout {
   type: typeof AT.DESTROY_CHECKOUT
+}
+interface FetchBankTransferAccountsFailure {
+  payload: {
+    error: string
+  }
+  type: typeof AT.FETCH_BANK_TRANSFER_ACCOUNTS_ERROR
+}
+interface FetchBankTransferAccountsLoading {
+  type: typeof AT.FETCH_BANK_TRANSFER_ACCOUNTS_LOADING
+}
+
+interface FetchBankTransferAccountsSuccess {
+  payload: {
+    accounts: BankTransferAccountType[]
+  }
+  type: typeof AT.FETCH_BANK_TRANSFER_ACCOUNTS_SUCCESS
 }
 interface FetchSBBalancesFailure {
   payload: {
@@ -373,6 +391,9 @@ export type SimpleBuyActionTypes =
   | AddCardDetailsLoading
   | AddCardDetailsSuccess
   | DestroyCheckout
+  | FetchBankTransferAccountsLoading
+  | FetchBankTransferAccountsSuccess
+  | FetchBankTransferAccountsFailure
   | FetchBTUpdateLoading
   | FetchSBBalancesFailure
   | FetchSBBalancesLoading

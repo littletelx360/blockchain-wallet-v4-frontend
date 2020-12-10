@@ -10,6 +10,9 @@ import { RootState } from 'data/rootReducer'
 export const getOrderType = (state: RootState) =>
   state.components.simpleBuy.orderType
 
+export const getBankTransferAccounts = (state: RootState) =>
+  state.components.simpleBuy.bankTransferAccounts
+
 export const getEverypay3DSDetails = (state: RootState) =>
   state.components.simpleBuy.everypay3DS
 
@@ -111,6 +114,7 @@ export const getDefaultPaymentMethod = (state: RootState) => {
                 method.currency === fiatCurrency
             )
           case 'BANK_ACCOUNT':
+          case 'BANK_TRANSFER':
           case 'LINK_BANK':
           case 'USER_CARD':
           case undefined:

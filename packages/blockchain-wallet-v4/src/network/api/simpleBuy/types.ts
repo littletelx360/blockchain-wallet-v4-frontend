@@ -304,3 +304,19 @@ export type YodleeAccountType = {
   requestId: string
   status: string
 }
+
+export type BankTransferAccountType = {
+  addedAt: string,
+  attributes: {},
+  currency: FiatType,
+  details: {
+    accountName: string,
+    accountNumber: string,
+    bankAccountType: string,
+    bankName: string,
+    routingNumber: string
+  },
+  id: string,
+  partner: string,
+  state: string
+}
