@@ -11,6 +11,7 @@ const Top = styled(FlyoutWrapper)`
   padding-bottom: 0px;
   position: relative;
   height: 100%;
+  display: flex;
 `
 
 const CloseIcon = styled(Icon)`
@@ -41,55 +42,38 @@ const Subcontent = styled(Text)`
 
 const Unsupported: React.FC<Props> = props => {
   const { paymentAccountEligible } = props.eligibility
-
+  // add prop here, bank linked vs. failure, use to check things
   return (
     <Top>
       <CloseIcon
         cursor
-        name='arrow-left'
+        name='close'
         size='20px'
         color='grey600'
         role='button'
-        onClick={() =>
-          props.simpleBuyActions.setStep({ step: 'CURRENCY_SELECTION' })
-        }
+        // onClick={() =>
+        //   close modal
+        // }
       />
       <Container>
-        <Image
-          width='48px'
-          height='48px'
-          name='world-alert'
-          srcset={{ 'world-alert2': '2x', 'world-alert3': '3x' }}
-        />
+        <Image width='100px' name='bank-success' />
         <Title color='grey800' size='20px' weight={600}>
           <FormattedMessage
-            id='modals.simplebuy.unsupported-title'
-            defaultMessage='Buy Crypto Coming Soon for'
-          />{' '}
-          {paymentAccountEligible ? (
-            props.fiatCurrency
-          ) : (
-            <FormattedMessage
-              id='modals.simplebuy.fiataccountineligible'
-              defaultMessage='your region.'
-            />
-          )}
+            id='copy.bank_linked_title'
+            defaultMessage='Bank Linked'
+          />
         </Title>
         <Subcontent color='grey600' weight={500}>
           {paymentAccountEligible ? (
-            <>
-              <FormattedMessage
-                id='modals.simplebuy.unsupported-subcontent'
-                defaultMessage="Currently, we don't support buying crypto with"
-              />{' '}
-              {props.fiatCurrency}
-              {'. '}
-            </>
+            <FormattedMessage
+              id='copy.bank_linked'
+              defaultMessage='Your {bankName} account is now linked to your Blockchain.com Wallet'
+            />
           ) : (
             <>
               <FormattedMessage
-                id='modals.simplebuy.unsupported-subcontent-1'
-                defaultMessage="Well this is awkward. We don't support buying crypto yet for"
+                id='copy.bank_linked_error'
+                defaultMessage='Please try linking your bank again. If this keeps happening, please contact support.'
               />{' '}
               <FormattedMessage
                 id='modals.simplebuy.fiatregion'
